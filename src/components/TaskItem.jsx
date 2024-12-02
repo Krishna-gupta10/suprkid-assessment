@@ -9,18 +9,24 @@ const TaskItem = ({ task, updateTaskStatus, deleteTask }) => {
   };
 
   return (
-    <li className="list-group-item d-flex justify-content-between align-items-center shadow-sm mb-3">
-      <div>
-        <h5 className="mb-1">{title}</h5>
+    <li className="list-group-item d-flex justify-content-between align-items-center shadow-sm mb-2">
+      <div style={{ flex: 1, marginRight: "15px" }}>
+        <h6 className="mb-1 text-primary">{title}</h6>
         <p className="mb-1 text-muted">{description}</p>
-        <span className={`badge ${status === 'Complete' ? 'bg-success' : 'bg-warning'} text-dark`}>{status}</span>
+        <span
+          className={`badge ${
+            status === "Complete" ? "bg-success" : "bg-warning text-dark"
+          }`}
+        >
+          {status}
+        </span>
       </div>
       <div>
         <button
           className="btn btn-sm btn-outline-primary me-2"
           onClick={handleStatusChange}
         >
-          {status === "Incomplete" ? "Mark as Complete" : "Mark as Incomplete"}
+          {status === "Incomplete" ? "Mark as Completed" : "Mark as Incomplete"}
         </button>
         <button
           className="btn btn-sm btn-outline-danger"

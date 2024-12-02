@@ -1,33 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import TaskItem from "./TaskItem";
 
 function TaskList({ tasks, updateTaskStatus, deleteTask }) {
   return (
-    <div className="card">
+    <div className="card shadow-sm">
       <div className="card-body">
-        <h5 className="card-title">Your Tasks</h5>
-        <ul className="list-group">
+        <h5 className="card-title text-primary">Your Tasks</h5>
+        <ul className="list-group mt-3">
           {tasks.length > 0 ? (
             tasks.map((task) => (
-              <li key={task.id} className="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <h6>{task.title}</h6>
-                  <p>{task.description}</p>
-                </div>
-                <div>
-                  <button
-                    className="btn btn-warning btn-sm mr-2"
-                    onClick={() => updateTaskStatus(task.id, task.status === "Completed" ? "In Progress" : "Completed")}
-                  >
-                    {task.status === "Completed" ? "Mark as In Progress" : "Mark as Completed"}
-                  </button>
-                  <button className="btn btn-danger btn-sm" onClick={() => deleteTask(task.id)}>
-                    Delete
-                  </button>
-                </div>
-              </li>
+              <TaskItem
+                key={task.id}
+                task={task}
+                updateTaskStatus={updateTaskStatus}
+                deleteTask={deleteTask}
+              />
             ))
           ) : (
-            <li className="list-group-item">No tasks available.</li>
+            <li className="list-group-item text-center">No tasks available.</li>
           )}
         </ul>
       </div>

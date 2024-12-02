@@ -8,13 +8,13 @@ function Home({ onLogout }) {
   const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch tasks when the component mounts
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem("authToken");
+      console.log("Token:", token); 
       if (!token) {
         toast.error("You need to log in first.");
-        navigate("/login"); // Redirect to login if token is missing
+        navigate("/login"); 
         return;
       }
       try {
@@ -24,6 +24,7 @@ function Home({ onLogout }) {
           },
         });
         const data = await response.json();
+        console.log("Tasks fetched:", data); 
         if (response.ok) {
           setTasks(data.tasks);
         } else {
@@ -31,6 +32,7 @@ function Home({ onLogout }) {
         }
       } catch (error) {
         toast.error("An error occurred while fetching tasks.");
+        console.error("Error fetching tasks:", error);
       }
     };
 
@@ -39,6 +41,8 @@ function Home({ onLogout }) {
 
   const addTask = async (task) => {
     const token = localStorage.getItem("authToken");
+    console.log("Token:", token); 
+
     const response = await fetch("http://localhost:5000/tasks", {
       method: "POST",
       headers: {
@@ -49,9 +53,10 @@ function Home({ onLogout }) {
     });
 
     const data = await response.json();
+    console.log("Task creation response:", data); 
     if (response.ok) {
       toast.success("Task created successfully!");
-      setTasks([...tasks, data.task]); // Add the new task to the state
+      setTasks([...tasks, data.task]); 
     } else {
       toast.error("Failed to create task.");
     }
@@ -69,8 +74,8 @@ function Home({ onLogout }) {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    onLogout(); // Handle logout action passed from parent
-    navigate("/login"); // Redirect to login
+    onLogout(); 
+    navigate("/login"); 
   };
 
   return (
@@ -79,10 +84,7 @@ function Home({ onLogout }) {
         <h1 className="display-4 text-primary">Taskify</h1>
         <p className="lead text-muted">Keep track of your tasks in a simple way.</p>
       </div>
-      <button
-        onClick={handleLogout}
-        className="btn btn-danger mb-4"
-      >
+      <button onClick={handleLogout} className="btn btn-danger mb-4">
         Logout
       </button>
       <div className="row">
@@ -91,7 +93,11 @@ function Home({ onLogout }) {
         </div>
       </div>
       <div className="mt-5">
-        <TaskList tasks={tasks} updateTaskStatus={updateTaskStatus} deleteTask={deleteTask} />
+        <TaskList
+          tasks={tasks}
+          updateTaskStatus={updateTaskStatus}
+          deleteTask={deleteTask}
+        />
       </div>
     </div>
   );

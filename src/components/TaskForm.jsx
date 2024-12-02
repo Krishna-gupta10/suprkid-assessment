@@ -6,8 +6,8 @@ function TaskForm({ addTask }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title && description) {
-      addTask({ title, description });
+    if (title.trim() && description.trim()) {
+      addTask({ title: title.trim(), description: description.trim() });
       setTitle("");
       setDescription("");
     } else {
@@ -16,9 +16,9 @@ function TaskForm({ addTask }) {
   };
 
   return (
-    <div className="card">
+    <div className="card shadow-sm mb-4">
       <div className="card-body">
-        <h5 className="card-title">Create a New Task</h5>
+        <h5 className="card-title text-primary">Create a New Task</h5>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="taskTitle">Task Title</label>
@@ -28,6 +28,7 @@ function TaskForm({ addTask }) {
               className="form-control"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter task title"
             />
           </div>
           <div className="form-group mt-3">
@@ -37,6 +38,7 @@ function TaskForm({ addTask }) {
               className="form-control"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter task description"
             />
           </div>
           <button type="submit" className="btn btn-primary mt-3">

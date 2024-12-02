@@ -62,3 +62,26 @@ form {
   font-size: 16px;
   cursor: pointer;
 }
+
+.card {
+  border-radius: 10px;
+}
+
+.list-group-item {
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.list-group-item:hover {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+  font-size: 0.85rem;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.6rem;
+  font-weight: 500;
+}
