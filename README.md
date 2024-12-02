@@ -5,7 +5,7 @@ Taskify is a task management application built with React and Vite for the front
 ## Features
 - Create, update, and delete tasks.
 - Mark tasks as complete/incomplete.
-- Toggle button that updates the task status and changes the badge color.
+- React Toastify for clean alerts.
 - Responsive and user-friendly interface.
 
 ## Tech Stack
@@ -17,7 +17,7 @@ Taskify is a task management application built with React and Vite for the front
 
 Before you begin, ensure you have the following installed on your local machine:
 - **Node.js** (>=v16.0.0)
-- **npm** (Node Package Manager) or **Yarn** (optional but recommended)
+- **npm** (Node Package Manager) 
 
 ## Installation
 
