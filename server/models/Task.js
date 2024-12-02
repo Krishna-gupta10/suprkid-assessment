@@ -4,6 +4,11 @@ const taskSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  status: {
+    type: String,
+    enum: ['Incomplete', 'Complete'], // Restrict values to "Incomplete" or "Complete"
+    default: 'Incomplete',           // Default status is "Incomplete"
+  },
 });
 
 const Task = mongoose.model('Task', taskSchema);

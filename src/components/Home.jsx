@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import TaskList from "./TaskList";
 import TaskForm from "./TaskForm";
+import 'react-toastify/dist/ReactToastify.css';
 
 function Home({ onLogout }) {
   const [tasks, setTasks] = useState([]);
@@ -53,56 +54,64 @@ function Home({ onLogout }) {
     }
   };
 
-  const updateTaskStatus = async (id, status) => {
-    console.log("Updating task status for ID:", id); // Debug log
+  const updateTaskStatus = async (taskId, newStatus) => {
     const token = localStorage.getItem("authToken");
+
     try {
-      const response = await fetch(`http://localhost:5000/tasks/${id}`, {
-        method: "PATCH",
+      const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status: newStatus }),
       });
-  
+
       if (response.ok) {
-        setTasks(
-          tasks.map((task) =>
-            task._id === id ? { ...task, status } : task
+        const updatedTask = await response.json();
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === taskId ? updatedTask.task : task
           )
         );
-        toast.success("Task status updated!");
+        toast.success('Task status updated successfully!');
       } else {
-        const errorData = await response.json();
-        console.error("Failed to update status:", errorData);
-        toast.error("Failed to update task status.");
+        toast.error('Failed to update task status.');
       }
     } catch (error) {
-      toast.error("An error occurred while updating task status.");
-      console.error("Error updating task:", error);
+      console.error('Error updating task status:', error);
+      toast.error('An error occurred while updating the task.');
     }
   };
-  
 
-  const deleteTask = async (id) => {
-    const token = localStorage.getItem("authToken");
+  const deleteTask = async (taskId) => {
+    const token = localStorage.getItem('authToken'); // or wherever your token is stored
+
+    // Confirmation before deletion
+    const isConfirmed = window.confirm('Are you sure you want to delete this task?');
+    if (!isConfirmed) {
+      return; // Exit if the user cancels
+    }
+
     try {
-      const response = await fetch(`http://localhost:5000/tasks/${id}`, {
-        method: "DELETE",
+      const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
+        method: 'DELETE',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (response.ok) {
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-        toast.success("Task deleted successfully!");
+        // Remove the deleted task from the state without reloading
+        setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+        console.log('Task deleted successfully');
       } else {
-        toast.error("Failed to delete task.");
+        const errorData = await response.json();
+        console.error(errorData.message || 'Error deleting task');
       }
     } catch (error) {
-      toast.error("An error occurred while deleting the task.");
-      console.error("Error deleting task:", error);
+      console.error('Error deleting task:', error);
     }
   };
 
@@ -114,13 +123,16 @@ function Home({ onLogout }) {
 
   return (
     <div className="container py-5">
+      {/* Logout button fixed at the top-right corner */}
+      <button onClick={handleLogout} className="btn btn-danger position-fixed top-0 end-0 m-3">
+        Logout
+      </button>
+
       <div className="text-center mb-5">
         <h1 className="display-4 text-primary">Taskify</h1>
         <p className="lead text-muted">Keep track of your tasks in a simple way.</p>
       </div>
-      <button onClick={handleLogout} className="btn btn-danger mb-4">
-        Logout
-      </button>
+
       <div className="row">
         <div className="col-md-5 mx-auto">
           <TaskForm addTask={addTask} />
@@ -133,6 +145,7 @@ function Home({ onLogout }) {
           deleteTask={deleteTask}
         />
       </div>
+      <ToastContainer /> {/* Ensure ToastContainer is added */}
     </div>
   );
 }

@@ -22,7 +22,7 @@ function Login({ onLogin }) {
       <div className="row w-100">
         <div className="col-md-6 col-lg-4 mx-auto">
           <div className="card p-4 shadow-sm">
-            <h3 className="text-center mb-4">Login</h3>
+            <h3 className="text-center mb-4">Testify - Login</h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group mb-3">
                 <label>Email</label>
