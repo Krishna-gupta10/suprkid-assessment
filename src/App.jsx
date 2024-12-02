@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -11,38 +11,52 @@ function App() {
   const [tasks, setTasks] = useState([]);
 
   const handleLogin = async (email, password) => {
-    const response = await fetch("http://localhost:5000/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await response.json();
-    if (data.token) {
-      localStorage.setItem("authToken", data.token);
-      setIsAuthenticated(true);
-    } else {
-      toast.error("Login failed");
-      throw new Error("Login failed");
+      const data = await response.json();
+      console.log("Response status:", response.status); 
+      console.log("Response data:", data); 
+
+      if (response.ok && data.token) {
+        localStorage.setItem("authToken", data.token);
+        setIsAuthenticated(true);
+      } else {
+        toast.error(data.message || "Login failed");
+        throw new Error(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      toast.error("An error occurred. Please check your credentials or try again.");
     }
   };
+
+
 
   const handleRegister = async (email, password) => {
-    const response = await fetch("http://localhost:5000/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await response.json();
-    if (data.message === "User registered successfully.") {
-      // Success response
-      toast.success("Registration successful! You can now log in.");
-    } else {
-      // Error response
-      throw new Error(data.message);
+      const data = await response.json();
+      if (response.ok) {
+        toast.success("Registration successful! You can now log in.");
+      } else {
+        toast.error(data.message || "Registration failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      toast.error("An error occurred. Please check your network and try again.");
     }
   };
+
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");

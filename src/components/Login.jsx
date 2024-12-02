@@ -10,8 +10,8 @@ function Login({ onLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await onLogin(email, password); // Call the onLogin function passed as a prop
-      navigate("/"); // Redirect to home after successful login
+      await onLogin(email, password); 
+      navigate("/"); 
     } catch (error) {
       toast.error("Login failed, please check your credentials!");
     }

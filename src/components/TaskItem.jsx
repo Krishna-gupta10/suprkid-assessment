@@ -3,10 +3,9 @@ import React from "react";
 const TaskItem = ({ task, updateTaskStatus, deleteTask }) => {
   const { _id, title, description, status } = task;
 
-  // Toggle status between "Incomplete" and "Complete"
   const handleStatusChange = () => {
     const newStatus = status === "Incomplete" ? "Complete" : "Incomplete";
-    updateTaskStatus(_id, newStatus); // Ensure `_id` is used
+    updateTaskStatus(_id, newStatus); 
   };
 
   return (
@@ -26,7 +25,6 @@ const TaskItem = ({ task, updateTaskStatus, deleteTask }) => {
           className="btn btn-sm btn-outline-primary me-2"
           onClick={handleStatusChange}
         >
-          {/* Button text toggles based on current status */}
           {status === "Incomplete" ? "Mark as Complete" : "Mark as Incomplete"}
         </button>
         <button

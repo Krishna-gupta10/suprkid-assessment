@@ -85,12 +85,11 @@ function Home({ onLogout }) {
   };
 
   const deleteTask = async (taskId) => {
-    const token = localStorage.getItem('authToken'); // or wherever your token is stored
+    const token = localStorage.getItem('authToken'); 
 
-    // Confirmation before deletion
     const isConfirmed = window.confirm('Are you sure you want to delete this task?');
     if (!isConfirmed) {
-      return; // Exit if the user cancels
+      return; 
     }
 
     try {
@@ -103,7 +102,6 @@ function Home({ onLogout }) {
       });
 
       if (response.ok) {
-        // Remove the deleted task from the state without reloading
         setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
         console.log('Task deleted successfully');
       } else {
@@ -123,7 +121,6 @@ function Home({ onLogout }) {
 
   return (
     <div className="container py-5">
-      {/* Logout button fixed at the top-right corner */}
       <button onClick={handleLogout} className="btn btn-danger position-fixed top-0 end-0 m-3">
         Logout
       </button>
@@ -145,7 +142,7 @@ function Home({ onLogout }) {
           deleteTask={deleteTask}
         />
       </div>
-      <ToastContainer /> {/* Ensure ToastContainer is added */}
+      <ToastContainer /> 
     </div>
   );
 }

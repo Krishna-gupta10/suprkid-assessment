@@ -15,8 +15,8 @@ function Register({ onRegister }) {
       return;
     }
     try {
-      await onRegister(email, password); // Call the onRegister function passed as a prop
-      navigate("/login"); // Redirect to login page after successful registration
+      await onRegister(email, password); 
+      navigate("/login"); 
     } catch (error) {
       toast.error("Registration failed, please try again!");
     }
