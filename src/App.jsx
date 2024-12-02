@@ -31,18 +31,16 @@ function App() {
     const response = await fetch("http://localhost:5000/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }), // Do not send confirmPassword here
+      body: JSON.stringify({ email, password }),
     });
 
     const data = await response.json();
-    if (response.ok) { // Check if the response status is ok (2xx)
-      if (data.token) {
-        localStorage.setItem("authToken", data.token);
-        setIsAuthenticated(true);
-      }
+    if (data.message === "User registered successfully.") {
+      // Success response
+      toast.success("Registration successful! You can now log in.");
     } else {
-      toast.error(data.message || "Registration failed");
-      throw new Error(data.message || "Registration failed");
+      // Error response
+      throw new Error(data.message);
     }
   };
 
