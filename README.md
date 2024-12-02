@@ -11,7 +11,7 @@ Taskify is a task management application built with React and Vite for the front
 ## Tech Stack
 - **Frontend**: React, Vite
 - **Backend**: Express
-- **Database**: (Specify your database here if applicable, e.g., MongoDB, PostgreSQL, etc.)
+- **Database**: MongoDB compass
 
 ## Prerequisites
 
@@ -25,5 +25,36 @@ Follow these steps to run the app locally:
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/taskify.git
+git clone https://github.com/krishna-gupta10/suprkid-assessment.git
 cd taskify
+```
+
+### 2. Install frontend dependencies
+Navigate to the frontend directory and install the required packages:
+
+```bash
+cd client
+npm install
+```
+
+### 3. Install backend dependencies
+Navigate to the backend directory and install the required packages:
+
+```bash
+cd server
+npm install
+```
+
+### 5. Run the application
+Start the backend server
+In the server directory, run the following command to start the Express server:
+
+```bash
+nodemon ./server.js
+```
+
+### Start the frontend server
+In the client directory, run the following command to start the React application with Vite:
+```bash
+npm run dev
+```
