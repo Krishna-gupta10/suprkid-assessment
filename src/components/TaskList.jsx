@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TaskItem from "./TaskItem";
 
 function TaskList({ tasks, updateTaskStatus, deleteTask }) {
@@ -10,10 +10,10 @@ function TaskList({ tasks, updateTaskStatus, deleteTask }) {
           {tasks.length > 0 ? (
             tasks.map((task) => (
               <TaskItem
-                key={task.id}
-                task={task}
-                updateTaskStatus={updateTaskStatus}
-                deleteTask={deleteTask}
+              key={task._id} // 
+              task={task}
+              updateTaskStatus={updateTaskStatus}
+              deleteTask={deleteTask}
               />
             ))
           ) : (

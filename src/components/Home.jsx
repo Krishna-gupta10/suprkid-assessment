@@ -11,71 +11,105 @@ function Home({ onLogout }) {
   useEffect(() => {
     const fetchTasks = async () => {
       const token = localStorage.getItem("authToken");
-      console.log("Token:", token); 
-      if (!token) {
-        toast.error("You need to log in first.");
-        navigate("/login"); 
-        return;
-      }
       try {
         const response = await fetch("http://localhost:5000/tasks", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const data = await response.json();
-        console.log("Tasks fetched:", data); 
         if (response.ok) {
           setTasks(data.tasks);
         } else {
           toast.error("Failed to fetch tasks.");
         }
       } catch (error) {
-        toast.error("An error occurred while fetching tasks.");
         console.error("Error fetching tasks:", error);
+        toast.error("An error occurred while fetching tasks.");
       }
     };
-
     fetchTasks();
-  }, [navigate]);
+  }, []);
 
   const addTask = async (task) => {
     const token = localStorage.getItem("authToken");
-    console.log("Token:", token); 
-
-    const response = await fetch("http://localhost:5000/tasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(task),
-    });
-
-    const data = await response.json();
-    console.log("Task creation response:", data); 
-    if (response.ok) {
-      toast.success("Task created successfully!");
-      setTasks([...tasks, data.task]); 
-    } else {
-      toast.error("Failed to create task.");
+    try {
+      const response = await fetch("http://localhost:5000/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(task),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setTasks([...tasks, data.task]);
+        toast.success("Task created successfully!");
+      } else {
+        toast.error(data.message || "Failed to create task.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while creating the task.");
+      console.error("Error creating task:", error);
     }
   };
 
-  const updateTaskStatus = (id, status) => {
-    setTasks(tasks.map((task) => (task.id === id ? { ...task, status } : task)));
-    toast.info("Task status updated!");
+  const updateTaskStatus = async (id, status) => {
+    console.log("Updating task status for ID:", id); // Debug log
+    const token = localStorage.getItem("authToken");
+    try {
+      const response = await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      });
+  
+      if (response.ok) {
+        setTasks(
+          tasks.map((task) =>
+            task._id === id ? { ...task, status } : task
+          )
+        );
+        toast.success("Task status updated!");
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to update status:", errorData);
+        toast.error("Failed to update task status.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while updating task status.");
+      console.error("Error updating task:", error);
+    }
   };
+  
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-    toast.warn("Task deleted!");
+  const deleteTask = async (id) => {
+    const token = localStorage.getItem("authToken");
+    try {
+      const response = await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+        toast.success("Task deleted successfully!");
+      } else {
+        toast.error("Failed to delete task.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while deleting the task.");
+      console.error("Error deleting task:", error);
+    }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    onLogout(); 
-    navigate("/login"); 
+    onLogout();
+    navigate("/login");
   };
 
   return (

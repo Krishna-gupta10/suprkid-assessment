@@ -1,12 +1,13 @@
 import React from "react";
 
 const TaskItem = ({ task, updateTaskStatus, deleteTask }) => {
-  const { id, title, description, status } = task;
+  const { _id, title, description, status } = task;
 
   const handleStatusChange = () => {
     const newStatus = status === "Incomplete" ? "Complete" : "Incomplete";
-    updateTaskStatus(id, newStatus);
+    updateTaskStatus(task._id, newStatus); // Ensure `_id` is used
   };
+
 
   return (
     <li className="list-group-item d-flex justify-content-between align-items-center shadow-sm mb-2">
@@ -14,9 +15,8 @@ const TaskItem = ({ task, updateTaskStatus, deleteTask }) => {
         <h6 className="mb-1 text-primary">{title}</h6>
         <p className="mb-1 text-muted">{description}</p>
         <span
-          className={`badge ${
-            status === "Complete" ? "bg-success" : "bg-warning text-dark"
-          }`}
+          className={`badge ${status === "Complete" ? "bg-success" : "bg-warning text-dark"
+            }`}
         >
           {status}
         </span>
@@ -26,11 +26,11 @@ const TaskItem = ({ task, updateTaskStatus, deleteTask }) => {
           className="btn btn-sm btn-outline-primary me-2"
           onClick={handleStatusChange}
         >
-          {status === "Incomplete" ? "Mark as Completed" : "Mark as Incomplete"}
+          {status === "Incomplete" ? "Mark as Complete" : "Mark as Incomplete"}
         </button>
         <button
           className="btn btn-sm btn-outline-danger"
-          onClick={() => deleteTask(id)}
+          onClick={() => deleteTask(_id)}
         >
           Delete
         </button>
