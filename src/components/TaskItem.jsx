@@ -13,7 +13,6 @@ const TaskItem = ({ task, updateTaskStatus, deleteTask }) => {
       <div style={{ flex: 1, marginRight: "15px" }}>
         <h6 className="mb-1 text-primary">{title}</h6>
         <p className="mb-1 text-muted">{description}</p>
-        {/* Badge color changes based on status */}
         <span
           className={`badge ${status === "Complete" ? "bg-success" : "bg-warning text-dark"}`}
         >

@@ -35,8 +35,6 @@ function App() {
     }
   };
 
-
-
   const handleRegister = async (email, password) => {
     try {
       const response = await fetch("http://localhost:5000/auth/register", {
@@ -56,7 +54,6 @@ function App() {
       toast.error("An error occurred. Please check your network and try again.");
     }
   };
-
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
